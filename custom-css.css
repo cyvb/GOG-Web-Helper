@@ -1,0 +1,148 @@
+.details__right-align {
+    text-align: right;
+}
+
+.price-tag {
+    position: relative;
+    margin-left: 0.5em;
+    min-width: 3.7em;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    background: #cacaca;
+    border: 1px solid #cacaca;
+    border-radius: 0.2em;
+    padding: 0.2em 0.1em 0.1em 0.2em;
+}
+
+.price-tag::before, .price-tag::after {
+    content: \'\';
+    border-style: solid;
+    position: absolute;
+    border-radius: 0.2em;
+    box-sizing: content-box;
+    transition: all 0.3s;
+}
+
+.price-normal::before, .price-normal::after {
+    border-color: #865c91;
+}
+
+.price-discount::before, .price-discount::after {
+    border-color: #4c6b22;
+}
+
+.price-tag::before {
+    width: 0;
+    height: 100%;
+    border-width: 1px 0 1px 0;
+    top: -1px;
+    left: 0;
+    transition-delay: 0.05s;
+}
+
+.price-tag::after {
+    width: 100%;
+    height: 0;
+    border-width: 0 1px 0 1px;
+    top: 0;
+    left: -1px;
+}
+
+.price-normal:hover {
+    background: #b57cc1;;
+    color: #eeeeee;
+}
+
+.price-discount:hover {
+    background: #a4d015;
+    color: #4c6b22;
+}
+
+.price-tag:hover::before {
+    width: 100%;
+}
+
+.price-tag:hover::after {
+    height: 100%;
+}
+
+.discount-hover-placeholder {
+    height: 100%;
+}
+
+.discount-hover-placeholder:hover .discount-label {
+    transition: margin-right 1s;
+    transition-timing-function: ease-out;
+    margin-right: -0.7em;
+}
+
+.block-scroll {
+    max-height: 12em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-right: 10px;
+}
+
+.block-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.block-scroll::-webkit-scrollbar-thumb {
+    background: #b57cc1;
+    border-radius: 3px;
+}
+
+#Prices_Table span {
+    display: inline-block;
+}
+
+.region-flag {
+    min-width: 3.5em;
+}
+
+.region-flag-img {
+    height: 1.5em;
+    vertical-align: middle;
+    -webkit-mask-image: -webkit-linear-gradient(left, #ffffff00 5%, #ffffff7f 70%, #ffffffff 100%);
+}
+
+.currency-symbol {
+    margin-right: 0.25em;
+    font-style: italic;
+}
+
+.price-int {
+    font-weight: bold;
+}
+
+.price-frac {
+    font-size: 0.7em;
+}
+
+.discount-label {
+    margin-right: -4.2em;
+    margin-left: 0.5em;
+    padding-right: 0.2em;
+    width: 3.7em;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 0.2em;
+    background: #4c6b22;
+    color: #a4d015;
+    will-change: margin-right;
+    transition: margin-right 0.5s;
+}
+
+.discount-label span {
+    vertical-align: sub;
+    font-size: 0.9em;
+}
+
+@keyframes slideio {
+    0% { margin-right: -4.2em; }
+    10% { margin-right: -4.2em; }
+    90% { margin-right: -0.7em; }
+    100% { margin-right: -0.7em; }
+}
