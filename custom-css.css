@@ -2,7 +2,7 @@
     text-align: right;
 }
 
-.price-tag {
+.price-normal, .price-discount {
     position: relative;
     margin-left: 0.5em;
     min-width: 3.7em;
@@ -15,24 +15,27 @@
     padding: 0.2em 0.1em 0.1em 0.2em;
 }
 
-.price-tag::before, .price-tag::after {
-    content: \'\';
+.price-normal::before, .price-normal::after {
+    content: '';
     border-style: solid;
+    border-color: #865c91;
     position: absolute;
     border-radius: 0.2em;
     box-sizing: content-box;
     transition: all 0.3s;
 }
 
-.price-normal::before, .price-normal::after {
-    border-color: #865c91;
-}
-
 .price-discount::before, .price-discount::after {
+    content: '';
+    border-style: solid;
     border-color: #4c6b22;
+    position: absolute;
+    border-radius: 0.2em;
+    box-sizing: content-box;
+    transition: all 0.3s;
 }
 
-.price-tag::before {
+.price-normal::before, .price-discount::before {
     width: 0;
     height: 100%;
     border-width: 1px 0 1px 0;
@@ -41,7 +44,7 @@
     transition-delay: 0.05s;
 }
 
-.price-tag::after {
+.price-normal::after, .price-discount::after {
     width: 100%;
     height: 0;
     border-width: 0 1px 0 1px;
@@ -59,11 +62,11 @@
     color: #4c6b22;
 }
 
-.price-tag:hover::before {
+.price-normal:hover::before, .price-discount:hover::before {
     width: 100%;
 }
 
-.price-tag:hover::after {
+.price-normal:hover::after, .price-discount:hover::after {
     height: 100%;
 }
 
@@ -140,9 +143,43 @@
     font-size: 0.9em;
 }
 
+.unavailable-product {
+    display: flex;
+    width: 100%;
+    height: 5em;
+    align-items: center;
+    justify-content:center;
+    border: solid 1px;
+    border-color: #865c91;
+    border-radius: 0.5em;
+}
+
+.unavailable-product span {
+    position: relative;
+    color: #A0A0A0;
+    font-weight: bold;
+}
+
+.unavailable-product span::before {
+    content: attr(data-content);
+    position: absolute;
+    color: #b57cc1;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+    animation: textcolorfly 3s infinite;
+    animation-timing-function: linear;
+}
+
 @keyframes slideio {
     0% { margin-right: -4.2em; }
     10% { margin-right: -4.2em; }
     90% { margin-right: -0.7em; }
     100% { margin-right: -0.7em; }
+}
+
+@keyframes textcolorfly {
+    0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
+    40% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    50% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    90% { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
+    100% { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
 }

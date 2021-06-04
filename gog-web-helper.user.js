@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name           GOG Web Helper
-// @version        0.1.2
+// @version        0.1.3
 // @namespace      cyvb
 // @author         cyvb
 // @description    Useful GOG tools on product page.
-// @updateURL      https://github.com/cyvb/GOG-Web-Helper/raw/main/gog-web-helper.user.js
+// @updateURL      https://github.com/cyvb/GOG-Web-Helper/raw/main/gog-web-helper.meta.js
 // @downloadURL    https://github.com/cyvb/GOG-Web-Helper/raw/main/gog-web-helper.user.js
 // @resource       CUSTOM_CSS https://raw.githubusercontent.com/cyvb/GOG-Web-Helper/main/custom-css.css
 // @include        https://*.gog.com/game/*
@@ -13,6 +13,7 @@
 // @grant          GM_xmlhttpRequest
 // @grant          GM_getResourceText
 // @grant          GM_addStyle
+// @connect        api.gog.com
 // @license        MIT; https://opensource.org/licenses/MIT
 // @copyright      2021
 // @run-at         document-end
@@ -37,16 +38,40 @@ function getCurrencySymbol(currency) {
     }
 }
 
+function syncXmlHttpRequest(target_url) {
+    return new Promise( (resolve, reject) => {
+        GM_xmlhttpRequest( {
+            method: 'GET',
+            url: target_url,
+            onload: function(resp) {
+                resolve(resp.response);
+            },
+            onerror: function(error) {
+                reject(error);
+            }
+        } );
+    } );
+}
+
 // Preparations
 // ISO 3166-1 alpha-2 codes
-var regions_list = ['AR', 'CN', 'FR', 'GB', 'HK', 'JP', 'UA', 'US'];
-
+var regions_list = ['AR', 'CN', 'FR', 'GB', 'HK', 'JP', 'RU', 'UA', 'US'];
 // Add custom css styles
 GM_addStyle(GM_getResourceText('CUSTOM_CSS'));
 
+// Test CSS
+// For devs ONLY. Comment these out when releasing!
+//let _css = `
+//    <style>
+//
+//    </style>
+//`;
+//$('html > head').append(_css);
+// Test CSS -END-
+
 
 // Main
-(function() {
+(async function() {
     'use strict';
 
     let detailsSeparators = $('.details__separator');
@@ -66,7 +91,15 @@ GM_addStyle(GM_getResourceText('CUSTOM_CSS'));
         </div>
     `) );
     $('#Prices_Table_Block').append($('<div class=\'block-scroll\' id=\'Prices_Table\'>'));
+    $('<hr class=\'details__separator\' />').insertAfter('#Prices_Table_Block');
 
+    // If product is not available now in store
+    let response_json = await syncXmlHttpRequest(`https://api.gog.com/v2/games/${product_uid}`);
+    if (!JSON.parse(response_json)._embedded.product.isAvailableForSale) {
+        $('#Prices_Table').append('<div class=\'unavailable-product\'><span data-content=\'Product is currently unavailable\'>Product is currently unavailable</span></div>');
+        $('#Prices_Table').css('padding-right', 0);
+        return 2;
+    }
 
     regions_list.forEach( function(region) {
 
@@ -79,16 +112,17 @@ GM_addStyle(GM_getResourceText('CUSTOM_CSS'));
             </div>
         `) );
 
+        // Get prices
         GM_xmlhttpRequest( {
             method: 'GET',
             url: `https://api.gog.com/products/${product_uid}/prices?countryCode=${region}`,
             onload: function(resp) {
-                if (resp.status != 200 && resp.status != 304) {
-                    return;
-                }
+                //if (resp.status != 200 && resp.status != 304) {
+                //    return 1;
+                //}
 
-                let contentJson = JSON.parse(resp.response);
-                let prices = contentJson._embedded.prices;
+                let content_json = JSON.parse(resp.response);
+                let prices = content_json._embedded.prices;
 
                 let regex_price = /\d+/;
                 prices.forEach( function(price_item) {
@@ -107,7 +141,7 @@ GM_addStyle(GM_getResourceText('CUSTOM_CSS'));
                     }
 
                     // Detect price discount for preparations of class names
-                    let price_tag_class = (c_discount_percent != 0) ? 'price-tag price-discount' : 'price-tag price-normal';
+                    let price_tag_class = (c_discount_percent != 0) ? 'price-discount' : 'price-normal';
                     // Split price text into currency symbol, integer part and fractional part.
                     let c_price_split = c_current_price.toString().split('.');
                     $(`#${region}_${c_currency}_Block`).append(`<span class=\'${price_tag_class}\' id=\'${region}_${c_currency}\'></span>`);
