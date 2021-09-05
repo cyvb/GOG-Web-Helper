@@ -1,4 +1,4 @@
-# GOG Web Helper 0.1.4
+# GOG Web Helper 0.1.5
 
 ## What is this?
 A Tampermonkey script with useful tools for GOG.com (like 'Augmented Steam').
