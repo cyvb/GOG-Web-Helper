@@ -6,7 +6,7 @@ A Tampermonkey script with useful tools for GOG.com (like 'Augmented Steam').
 ## How to install?
 1. Install Tampermonkey from your favourite extension store.
 2. Use [this link to the 'gog-web-helper.user.js' file](https://github.com/cyvb/GOG-Web-Helper/raw/main/gog-web-helper.user.js) in the repository.
-3. Alternatively you can find this project on GreasyFork.
+3. ~~Alternatively you can find this project on GreasyFork.~~ The repo in GreasyFork will be deleted since the used external script Moment.js is not approved.
 
 ## What it can do at present?
 - Show prices in diffrent regions.

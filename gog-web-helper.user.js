@@ -189,7 +189,6 @@ function _addPrices() {
                     // Append currency symbol.
                     $(`#${region}_${c_currency}`).append(`<span class=\'currency-symbol\'>${getCurrencySymbol(c_currency)}</span>`);
                     // Append integer part and fractional part.
-                    //c_price_split.forEach( function(part, part_index)
                     for (let [part_index,part] of c_price_split.entries()) {
                         $(`#${region}_${c_currency}`).append( (part_index == 0) ? `<span class=\'price-int\'>${part}</>` : `<span class=\'price-frac\'>.${part}</>` );
                     }
