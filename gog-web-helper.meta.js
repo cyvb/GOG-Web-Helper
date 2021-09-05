@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           GOG Web Helper
-// @version        0.1.3
+// @version        0.1.4
 // @namespace      cyvb
 // @author         cyvb
 // @description    Useful GOG tools on product page.
