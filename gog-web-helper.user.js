@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name           GOG Web Helper
-// @version        0.1.5
+// @version        0.1.6
 // @namespace      cyvb
 // @author         cyvb
 // @description    Useful GOG tools on product page.
-// @updateURL      https://github.com/cyvb/GOG-Web-Helper/raw/main/gog-web-helper.meta.js
-// @downloadURL    https://github.com/cyvb/GOG-Web-Helper/raw/main/gog-web-helper.user.js
+// @updateURL      https://raw.githubusercontent.com/cyvb/GOG-Web-Helper/main/gog-web-helper.meta.js
+// @downloadURL    https://raw.githubusercontent.com/cyvb/GOG-Web-Helper/main/gog-web-helper.user.js
 // @resource       CUSTOM_CSS https://raw.githubusercontent.com/cyvb/GOG-Web-Helper/main/custom-css.css
-// @include        https://*.gog.com/game/*
-// @require        https://code.jquery.com/jquery-3.6.0.slim.min.js
+// @match          https://*.gog.com/*game/*
+// @require        https://code.jquery.com/jquery-3.6.1.slim.min.js
 // @require        https://momentjs.com/downloads/moment.min.js
 // @grant          GM_log
 // @grant          GM_xmlhttpRequest
@@ -50,9 +50,9 @@ class DataHolder {
 
         this._update = await this.getProductLastestVersionAndTime(this._uid);
         let t_uid = this._uid;
-        if (this._update.time == 'N/A') {
+        if (this._update.time === 'N/A') {
             for (let pkg_item of this._packages) {
-                if (pkg_item.type == 'GAME') {
+                if (pkg_item.type === 'GAME') {
                     t_uid = pkg_item.uid;
                     break;
                 }
@@ -190,7 +190,7 @@ function _addPrices() {
                     $(`#${region}_${c_currency}`).append(`<span class=\'currency-symbol\'>${getCurrencySymbol(c_currency)}</span>`);
                     // Append integer part and fractional part.
                     for (let [part_index,part] of c_price_split.entries()) {
-                        $(`#${region}_${c_currency}`).append( (part_index == 0) ? `<span class=\'price-int\'>${part}</>` : `<span class=\'price-frac\'>.${part}</>` );
+                        $(`#${region}_${c_currency}`).append( (part_index === 0) ? `<span class=\'price-int\'>${part}</>` : `<span class=\'price-frac\'>.${part}</>` );
                     }
                 }
 
@@ -232,12 +232,12 @@ async function _addVersions() {
     $('<hr class=\'details__separator\' />').insertAfter('#Versions_Table_Block');
 
     for (let pkg_item of c_product_ptr._packages) {
-        if (pkg_item.type == 'GAME') {
+        if (pkg_item.type === 'GAME') {
             await _addVersionLabel(pkg_item);
         }
     }
     for (let pkg_item of c_product_ptr._packages) {
-        if (pkg_item.type == 'DLC') {
+        if (pkg_item.type === 'DLC') {
             await _addVersionLabel(pkg_item);
         }
     }
